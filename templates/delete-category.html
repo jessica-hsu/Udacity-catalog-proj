@@ -1,0 +1,73 @@
+<!-- Home page for the catalog. Login button on the top. List of categories on side bar. -->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+		<link rel="stylesheet" href="../static/style.css">
+		<title>Delete Category</title>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-2" id="menu">
+					<h3>Categories</h3>
+					<div class="list-group" id="categories">
+						{% for c in categories %}
+							<a href="{{url_for('view_category_items',category_id=c.id)}}" class="list-group-item">{{c.name}}<a>
+						{% endfor %}
+					</div>
+					<h3>Action</h3>
+					<div class="list-group" id="action-items-categories">
+						<a href="{{url_for('add_category')}}" class="list-group-item">Add Category</a>
+						<a href="{{url_for('view_categories_to_delete')}}" class="list-group-item">Delete Category</a>
+					</div>
+				</div>
+				<div class="col-sm-10" id="content">
+					<div class="page-header"><h1>Catalog</h1></div>
+					<div id="login-info">
+						<i>Welcome, {{the_user_name}}</i>
+						{% if 'name' in session %}
+							<a href="{{url_for('logout')}}"><button type="button" class="btn btn-sm">Logout</button></a>
+						{% else %}
+							<a href="{{url_for('login')}}"><button type="button" class="btn btn-sm">Login</button></a>
+						{% endif %}
+					</div>
+					<div id="main">
+						<h3>Delete Category</h3>
+						<a href="{{url_for('load_main_page')}}">Back to main page</a>
+						<br><br>
+						<div id="all-categories" class="table-responsive">
+							<table class="table table-striped">
+								<thead>
+									<tr><th>Category</th><th>Action</th></tr>
+								</thead>
+								<tbody>
+									{% if 'name' in session %}
+										{% for d in deleted %}
+											<tr><td>{{d.name}}</td>
+													<td>
+														<a href="{{url_for('delete_category_now',category_id=d.id)}}">
+															<button type="button" class="btn btn-danger">Delete</button><a>
+													</td></tr>
+										{% endfor %}
+									{% else %}
+											<p>You can only delete categories you created</p>
+									{% endif %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
